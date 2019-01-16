@@ -1,0 +1,39 @@
+{
+  "name": "nuxt-demo",
+  "version": "1.0.0",
+  "description": "My super Nuxt.js project",
+  "author": "charis",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "lodash": "^4.17.11",
+    "iview": "3.2.1",
+    "nuxt": "^2.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/proxy": "^1.3.1",
+    "babel-eslint": "^8.2.1",
+    "eslint": "^5.0.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-prettier": "2.6.2",
+    "eslint-plugin-vue": "^4.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "nodemon": "^1.11.0",
+    "prettier": "1.14.3"
+  },
+  "config": {
+    "nuxt": {
+      "port": "3001"
+    }
+  }
+}
