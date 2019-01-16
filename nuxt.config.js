@@ -71,6 +71,22 @@ module.exports = {
    * Build configuration
    */
   build: {
+    analyze: true,
+
+    babel: {
+      plugins: [
+        [
+          'import',
+          {
+            libraryName: 'iview',
+            libraryDirectory: 'src/components'
+          }
+        ],
+        '@babel/plugin-transform-runtime',
+        'lodash'
+      ]
+    },
+
     plugins: [
       new webpack.ProvidePlugin({
         _: 'lodash'

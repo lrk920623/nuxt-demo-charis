@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import iview from 'iview'
+import { Button } from 'iview'
 
 export default () => {
-  Vue.use(iview)
+  Vue.component('Button', Button)
 }
