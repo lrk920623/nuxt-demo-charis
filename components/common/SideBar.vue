@@ -1,4 +1,4 @@
-<template>
+<template v-if="menuList">
   <Menu
     ref="leftMenu"
     :active-name="activeMenu"
@@ -33,7 +33,7 @@
         <Icon
           :type="item.icon"
           :key="item.route"></Icon>
-        {{ item.name }}
+        {{ item.name }} {{ activeMenu }}
         </MenuItem>
       </template>
     </template>
@@ -53,8 +53,14 @@ const { mapState, mapMutations } = createNamespacedHelpers(module)
 export default {
   name: 'VSideBar',
 
+  data: function() {
+    return {
+      activeMenu: ''
+    }
+  },
+
   computed: {
-    ...mapState(['activeMenu', 'menuList']),
+    ...mapState(['menuList']),
 
     openedMenu() {
       let activeMenuParent = []
@@ -78,6 +84,15 @@ export default {
       const menu = this.$refs.leftMenu
       const openedMenu = menu.$children.find(s => s.opened)
       if (openedMenu) openedMenu.opened = false
+    },
+
+    menuList: function(newVal) {
+      this.activeMenu = this.$route.name
+
+      this.$nextTick(() => {
+        this.$refs.leftMenu.updateActiveName()
+        this.$refs.leftMenu.updateOpened()
+      })
     }
   },
 
