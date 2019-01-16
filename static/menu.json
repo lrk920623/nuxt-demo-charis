@@ -1,0 +1,29 @@
+[
+  {
+    "route": "home",
+    "name": "首页",
+    "icon": "ios-navigate"
+  },
+  {
+    "name": "一级菜单 1",
+    "icon": "ios-navigate",
+    "route": "first",
+    "child": [
+      {
+        "route": "supplier",
+        "name": "二级菜单 1"
+      }
+    ]
+  },
+  {
+    "name": "一级菜单 2",
+    "icon": "ios-navigate",
+    "route": "factoryLicence",
+    "child": [
+      {
+        "route": "factories",
+        "name": "二级菜单 2"
+      }
+    ]
+  }
+]
