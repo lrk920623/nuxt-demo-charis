@@ -1,12 +1,13 @@
-<template v-if="menuList">
+<template>
   <Menu
+    v-if="menuList"
     ref="leftMenu"
     :active-name="activeMenu"
     :open-names="openedMenu"
     accordion
     theme="dark"
     width="auto"
-    @on-select="clickMenu">
+    @on-select="changeMenu">
     <template v-for="item in menuList">
       <template v-if="item.child && item.child.length">
         <Submenu
@@ -33,7 +34,7 @@
         <Icon
           :type="item.icon"
           :key="item.route"></Icon>
-        {{ item.name }} {{ activeMenu }}
+        {{ item.name }}
         </MenuItem>
       </template>
     </template>
@@ -47,63 +48,53 @@ import { StoreModuleName } from '../../utils/constant'
 import { GET_MENU_LIST } from '../../types/action-types'
 import { CHANGE_ACTIVE_MENU } from '../../types/mutation-types'
 
-const module = StoreModuleName.sideBar
-const { mapState, mapMutations } = createNamespacedHelpers(module)
+const {
+  mapState,
+  mapGetters,
+  mapMutations,
+  mapActions
+} = createNamespacedHelpers(StoreModuleName.sideBar)
 
 export default {
   name: 'VSideBar',
 
-  data: function() {
-    return {
-      activeMenu: ''
-    }
-  },
-
   computed: {
-    ...mapState(['menuList']),
-
-    openedMenu() {
-      let activeMenuParent = []
-      this.menuList.forEach(s => {
-        if (s.route === this.activeMenu || !s.child) return
-
-        s.child.forEach(c => {
-          if (c.route === this.activeMenu) activeMenuParent.push(s.route)
-        })
-      })
-
-      return activeMenuParent
-    }
+    ...mapState(['menuList', 'activeMenu']),
+    ...mapGetters(['openedMenu'])
   },
 
   watch: {
-    activeMenu: function(newVal) {
-      const topRoute = this.menuList.find(s => s.route === newVal)
-      if (!topRoute) return
+    openedMenu: function() {
+      this.updateMenuState()
+    }
+  },
 
-      const menu = this.$refs.leftMenu
-      const openedMenu = menu.$children.find(s => s.opened)
-      if (openedMenu) openedMenu.opened = false
-    },
+  mounted: function() {
+    this.getMenuList()
 
-    menuList: function(newVal) {
-      this.activeMenu = this.$route.name
+    const unwatch = this.$watch('menuList', function() {
+      this.changeMenu(this.$route.name)
+      this.updateMenuState()
 
+      unwatch()
+    })
+  },
+
+  methods: {
+    ...mapMutations({
+      changeMenu: CHANGE_ACTIVE_MENU
+    }),
+
+    ...mapActions({
+      getMenuList: GET_MENU_LIST
+    }),
+
+    updateMenuState() {
       this.$nextTick(() => {
         this.$refs.leftMenu.updateActiveName()
         this.$refs.leftMenu.updateOpened()
       })
     }
-  },
-
-  mounted: function() {
-    this.$store.dispatch(joinType(module, GET_MENU_LIST))
-  },
-
-  methods: {
-    ...mapMutations({
-      clickMenu: CHANGE_ACTIVE_MENU
-    })
   }
 }
 </script>

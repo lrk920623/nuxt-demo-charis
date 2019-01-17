@@ -6,6 +6,21 @@ export const state = () => ({
   menuList: []
 })
 
+export const getters = {
+  openedMenu(state) {
+    let activeMenuParent = []
+    state.menuList.forEach(s => {
+      if (s.route === state.activeMenu || !s.child) return
+
+      s.child.forEach(c => {
+        if (c.route === state.activeMenu) activeMenuParent.push(s.route)
+      })
+    })
+
+    return activeMenuParent
+  }
+}
+
 export const mutations = {
   [CHANGE_ACTIVE_MENU](state, menu) {
     state.activeMenu = menu
